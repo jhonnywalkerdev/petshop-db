@@ -38,12 +38,11 @@ CREATE TABLE IF NOT EXISTS pet(
     nome VARCHAR(50),
     especie VARCHAR(50),
     porte VARCHAR(50),
-    -- dt_nasc DATE(),
-    CONSTRAINT pk_pet PRIMARY KEY(id)
+    dt_nasc DATE,
+    id_prontuario INT NULL,
+    CONSTRAINT pk_pet PRIMARY KEY(id),
+    CONSTRAINT fk_pet_prontuario FOREIGN KEY(id_prontuario) REFERENCES prontuario(id)
 );
-
--- creating a foreign key called fk_id_prontuario on table pet referencing prontuario(id)
-ALTER TABLE pet ADD CONSTRAINT fk_id_prontuario FOREIGN KEY(id) REFERENCES prontuario(id);
 
 -- creating a table for form of payment
 CREATE TABLE IF NOT EXISTS forma_pagamento(
@@ -65,4 +64,20 @@ CREATE TABLE IF NOT EXISTS funcionario(
     especialidade VARCHAR(20) NULL,
     comissao DECIMAL(4,2),
     CONSTRAINT pk_funcionario PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS cliente(
+    id INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    CONSTRAINT pk_cliente PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS cliente_pet(
+    id INT NOT NULL AUTO_INCREMENT,
+    id_cliente INT NOT NULL,
+    id_pet INT NOT NULL,
+    CONSTRAINT pk_cliente_pet PRIMARY KEY(id),
+    CONSTRAINT fk_cliente_pet_cliente FOREIGN KEY(id_cliente) REFERENCES cliente(id),
+    CONSTRAINT fk_cliente_pet_pet FOREIGN KEY(id_pet) REFERENCES pet(id)
 );
